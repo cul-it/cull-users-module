@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Installation functions for Cull Users module.
+ */
+
+use Drupal\user\RoleInterface;
+
+/**
+ * Implements hook_install().
+ */
+function cull_users_install() {
+  user_role_change_permissions(RoleInterface::ANONYMOUS_ID, array(
+    'cull users' => TRUE,
+  ));
+}

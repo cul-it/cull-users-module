@@ -1,0 +1,14 @@
+cull_users.cull:
+  path: 'cull_users/cull'
+  defaults:
+    _controller: '\Drupal\cul_users\Controller\Cull_UserController::cull'
+  requirements:
+    _permission: 'cull users'
+
+cull_users.form:
+  path: '/admin/config/development/cull_users'
+  defaults:
+    _form: 'Drupal\cull_users\Form\Cull_UsersForm'
+    _title: 'Cull users settings'
+  requirements:
+    _permission: 'administer site configuration'
