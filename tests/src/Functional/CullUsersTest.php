@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\cron_example\Functional;
 
-use Drupal\Tests\examples\Functional\ExamplesBrowserTestBase;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Test the functionality for the Cron Example.
