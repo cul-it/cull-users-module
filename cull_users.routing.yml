@@ -1,7 +1,7 @@
 cull_users.cull:
   path: 'cull_users/cull'
   defaults:
-    _controller: '\Drupal\cul_users\Controller\Cull_UserController::cull'
+    _controller: '\Drupal\cull_users\Controller\Cull_UsersController::cull'
   requirements:
     _permission: 'cull users'
 
