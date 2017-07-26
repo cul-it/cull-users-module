@@ -37,3 +37,4 @@ class Cull_UsersController {
 
     return $element;
   }
+}
