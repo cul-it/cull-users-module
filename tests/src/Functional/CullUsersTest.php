@@ -5,7 +5,7 @@ namespace Drupal\Tests\cull_users\Functional;
 use Drupal\Tests\BrowserTestBase;
 
 /**
- * Test the functionality for the Cron Example.
+ * Test the functionality for the Cull Users.
  *
  * @ingroup cull_users
  *

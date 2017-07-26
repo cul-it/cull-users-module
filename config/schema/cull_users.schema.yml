@@ -1,11 +1,11 @@
-# Set configuration defaults. This schema describes the cron_example.settings
+# Set configuration defaults. This schema describes the cull_users.settings
 # config. The defaults for this config are set in
-# config/install/cron_example.settings.yml and then used by
-# \Drupal\cron_example\Form\CronExampleForm.
+# config/install/cull_users.settings.yml and then used by
+# \Drupal\cull_users\Form\CronExampleForm.
 # @see https://www.drupal.org/node/1905070
-cron_example.settings:
+cull_users.settings:
   type: config_object
-  label: 'Cron Example settings'
+  label: 'Cull Users settings'
   mapping:
     interval:
       type: integer
