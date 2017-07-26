@@ -1,6 +1,0 @@
-name: Cull Users Module
-description: 'Removes users who have no roles assigned.'
-package: Cornell University Library
-type: module
-version: 1.0
-core: 8.x

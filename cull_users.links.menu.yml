@@ -1,5 +1,0 @@
-cull_users.form:
-  title: 'Cull Users settings'
-  description: 'Configure settings for the Cull Users module.'
-  route_name: cull_users.form
-  parent: 'system.admin_config_development'
