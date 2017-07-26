@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\cron_example\Form;
+namespace Drupal\cull_users\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\CronInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Form with examples on how to use cron.
  */
-class CronExampleForm extends ConfigFormBase {
+class CullUsersForm extends ConfigFormBase {
 
   /**
    * The current user.
@@ -73,14 +73,14 @@ class CronExampleForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'cron_example';
+    return 'cull_users';
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->configFactory->get('cron_example.settings');
+    $config = $this->configFactory->get('cull_users.settings');
 
     $form['status'] = [
       '#type' => 'details',
@@ -92,16 +92,16 @@ class CronExampleForm extends ConfigFormBase {
       '#markup' => $this->t('The cron example demonstrates hook_cron() and hook_queue_info() processing. If you have administrative privileges you can run cron from this page and see the results.'),
     ];
 
-    $next_execution = \Drupal::state()->get('cron_example.next_execution');
+    $next_execution = \Drupal::state()->get('cull_users.next_execution');
     $next_execution = !empty($next_execution) ? $next_execution : REQUEST_TIME;
 
     $args = [
-      '%time' => date_iso8601(\Drupal::state()->get('cron_example.next_execution')),
+      '%time' => date_iso8601(\Drupal::state()->get('cull_users.next_execution')),
       '%seconds' => $next_execution - REQUEST_TIME,
     ];
     $form['status']['last'] = [
       '#type' => 'item',
-      '#markup' => $this->t('cron_example_cron() will next execute the first time cron runs after %time (%seconds seconds from now)', $args),
+      '#markup' => $this->t('cull_users_cron() will next execute the first time cron runs after %time (%seconds seconds from now)', $args),
     ];
 
     if ($this->currentUser->hasPermission('administer site configuration')) {
@@ -112,7 +112,7 @@ class CronExampleForm extends ConfigFormBase {
       ];
       $form['cron_run']['cron_reset'] = [
         '#type' => 'checkbox',
-        '#title' => $this->t("Run cron_example's cron regardless of whether interval has expired."),
+        '#title' => $this->t("Run cull_users's cron regardless of whether interval has expired."),
         '#default_value' => FALSE,
       ];
       $form['cron_run']['cron_trigger']['actions'] = ['#type' => 'actions'];
@@ -129,8 +129,8 @@ class CronExampleForm extends ConfigFormBase {
       '#open' => TRUE,
     ];
 
-    $queue_1 = $this->queue->get('cron_example_queue_1');
-    $queue_2 = $this->queue->get('cron_example_queue_2');
+    $queue_1 = $this->queue->get('cull_users_queue_1');
+    $queue_2 = $this->queue->get('cull_users_queue_2');
 
     $args = [
       '%queue_1' => $queue_1->numberOfItems(),
@@ -150,10 +150,10 @@ class CronExampleForm extends ConfigFormBase {
       '#type' => 'radios',
       '#title' => $this->t('Queue to add items to'),
       '#options' => [
-        'cron_example_queue_1' => $this->t('Queue 1'),
-        'cron_example_queue_2' => $this->t('Queue 2'),
+        'cull_users_queue_1' => $this->t('Queue 1'),
+        'cull_users_queue_2' => $this->t('Queue 2'),
       ],
-      '#default_value' => 'cron_example_queue_1',
+      '#default_value' => 'cull_users_queue_1',
     ];
     $form['cron_queue_setup']['actions'] = ['#type' => 'actions'];
     $form['cron_queue_setup']['actions']['submit'] = [
@@ -164,13 +164,13 @@ class CronExampleForm extends ConfigFormBase {
 
     $form['configuration'] = [
       '#type' => 'details',
-      '#title' => $this->t('Configuration of cron_example_cron()'),
+      '#title' => $this->t('Configuration of cull_users_cron()'),
       '#open' => TRUE,
     ];
-    $form['configuration']['cron_example_interval'] = [
+    $form['configuration']['cull_users_interval'] = [
       '#type' => 'select',
       '#title' => $this->t('Cron interval'),
-      '#description' => $this->t('Time after which cron_example_cron will respond to a processing request.'),
+      '#description' => $this->t('Time after which cull_users_cron will respond to a processing request.'),
       '#default_value' => $config->get('interval'),
       '#options' => [
         60 => $this->t('1 minute'),
@@ -187,15 +187,15 @@ class CronExampleForm extends ConfigFormBase {
    * Allow user to directly execute cron, optionally forcing it.
    */
   public function cronRun(array &$form, FormStateInterface &$form_state) {
-    $config = $this->configFactory->getEditable('cron_example.settings');
+    $config = $this->configFactory->getEditable('cull_users.settings');
 
     $cron_reset = $form_state->getValue('cron_reset');
     if (!empty($cron_reset)) {
-      \Drupal::state()->set('cron_example.next_execution', 0);
+      \Drupal::state()->set('cull_users.next_execution', 0);
     }
 
     // Use a state variable to signal that cron was run manually from this form.
-    $this->state->set('cron_example_show_status_message', TRUE);
+    $this->state->set('cull_users_show_status_message', TRUE);
     if ($this->cron->run()) {
       drupal_set_message($this->t('Cron ran successfully.'));
     }
@@ -213,7 +213,7 @@ class CronExampleForm extends ConfigFormBase {
     $num_items = $form_state->getValue('num_items');
     // Queues are defined by a QueueWorker Plugin which are selected by their
     // id attritbute.
-    // @see \Drupal\cron_example\Plugin\QueueWorker\ReportWorkerOne
+    // @see \Drupal\cull_users\Plugin\QueueWorker\ReportWorkerOne
     $queue = $this->queue->get($values['queue']);
 
     for ($i = 1; $i <= $num_items; $i++) {
@@ -239,8 +239,8 @@ class CronExampleForm extends ConfigFormBase {
     // Update the interval as stored in configuration. This will be read when
     // this modules hook_cron function fires and will be used to ensure that
     // action is taken only after the appropiate time has elapsed.
-    $this->configFactory->getEditable('cron_example.settings')
-      ->set('interval', $form_state->getValue('cron_example_interval'))
+    $this->configFactory->getEditable('cull_users.settings')
+      ->set('interval', $form_state->getValue('cull_users_interval'))
       ->save();
 
     parent::submitForm($form, $form_state);
@@ -250,7 +250,7 @@ class CronExampleForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return ['cron_example.settings'];
+    return ['cull_users.settings'];
   }
 
 }

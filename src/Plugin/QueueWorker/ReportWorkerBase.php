@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\cron_example\Plugin\QueueWorker;
+namespace Drupal\cull_users\Plugin\QueueWorker;
 
 use Drupal\Core\State\StateInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
@@ -73,7 +73,7 @@ abstract class ReportWorkerBase extends QueueWorkerBase implements ContainerFact
    *   The $item which was stored in the cron queue.
    */
   protected function reportWork($worker, $item) {
-    if ($this->state->get('cron_example_show_status_message')) {
+    if ($this->state->get('cull_users_show_status_message')) {
       drupal_set_message(
         $this->t('Queue @worker worker processed item with sequence @sequence created at @time', [
           '@worker' => $worker,
@@ -82,7 +82,7 @@ abstract class ReportWorkerBase extends QueueWorkerBase implements ContainerFact
         ])
       );
     }
-    $this->logger->get('cron_example')->info('Queue @worker worker processed item with sequence @sequence created at @time', [
+    $this->logger->get('cull_users')->info('Queue @worker worker processed item with sequence @sequence created at @time', [
       '@worker' => $worker,
       '@sequence' => $item->sequence,
       '@time' => date_iso8601($item->created),

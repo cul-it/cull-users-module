@@ -6,7 +6,7 @@
  */
 
 /**
- * @defgroup cron_example Example: Cron
+ * @defgroup cull_users Example: Cron
  * @ingroup examples
  * @{
  * Example using Cron API, including hook_cron() and @QueueWorker plugins
@@ -23,12 +23,12 @@
  * time the Drupal cron runs. We then decide what has to happen in response.
  *
  * In this example, we log a message after the time given in the state value
- * 'cron_example.next_execution'. Then we update that variable to a time in the
+ * 'cull_users.next_execution'. Then we update that variable to a time in the
  * future.
  */
-function cron_example_cron() {
+function cull_users_cron() {
   // We access our configuration.
-  $cron_config = \Drupal::configFactory()->getEditable('cron_example.settings');
+  $cron_config = \Drupal::configFactory()->getEditable('cull_users.settings');
   // Default to an hourly interval. Of course, cron has to be running at least
   // hourly for this to work.
   $interval = $cron_config->get('interval');
@@ -36,21 +36,21 @@ function cron_example_cron() {
 
   // We usually don't want to act every time cron runs (which could be every
   // minute) so keep a time for the next run in the site state.
-  $next_execution = \Drupal::state()->get('cron_example.next_execution');
+  $next_execution = \Drupal::state()->get('cull_users.next_execution');
   $next_execution = !empty($next_execution) ? $next_execution : 0;
   if (REQUEST_TIME >= $next_execution) {
     // This is a silly example of a cron job.
     // It just makes it obvious that the job has run without
     // making any changes to your database.
-    \Drupal::logger('cron_example')->notice('cron_example ran');
-    if (\Drupal::state()->get('cron_example_show_status_message')) {
-      drupal_set_message(t('cron_example executed at %time', ['%time' => date_iso8601(REQUEST_TIME)]));
-      \Drupal::state()->set('cron_example_show_status_message', FALSE);
+    \Drupal::logger('cull_users')->notice('cull_users ran');
+    if (\Drupal::state()->get('cull_users_show_status_message')) {
+      drupal_set_message(t('cull_users executed at %time', ['%time' => date_iso8601(REQUEST_TIME)]));
+      \Drupal::state()->set('cull_users_show_status_message', FALSE);
     }
-    \Drupal::state()->set('cron_example.next_execution', REQUEST_TIME + $interval);
+    \Drupal::state()->set('cull_users.next_execution', REQUEST_TIME + $interval);
   }
 }
 
 /**
- * @} End of "defgroup cron_example".
+ * @} End of "defgroup cull_users".
  */
