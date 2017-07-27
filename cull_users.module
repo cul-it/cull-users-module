@@ -5,6 +5,8 @@
  * Demonstrates use of the Cron API in Drupal - hook_cron().
  */
 
+use \Drupal\user\Entity\User;
+
 /**
  * @defgroup cull_users Example: Cron
  * @ingroup examples
@@ -27,6 +29,8 @@
  * future.
  */
 function cull_users_cron() {
+  $foo = array('one','two','three');
+  dumpt($foo, 'testing');
   // We access our configuration.
   $cron_config = \Drupal::configFactory()->getEditable('cull_users.settings');
   // Default to an hourly interval. Of course, cron has to be running at least
@@ -45,12 +49,40 @@ function cull_users_cron() {
     \Drupal::logger('cull_users')->notice('cull_users ran');
     if (\Drupal::state()->get('cull_users_show_status_message')) {
       drupal_set_message(t('cull_users executed at %time', ['%time' => date_iso8601(REQUEST_TIME)]));
-      \Drupal::state()->set('cull_users_show_status_message', FALSE);
+      //\Drupal::state()->set('cull_users_show_status_message', FALSE);
     }
     \Drupal::state()->set('cull_users.next_execution', REQUEST_TIME + $interval);
   }
+
+  // Find all users
+  $ids = \Drupal::entityQuery('user')
+  ->condition('status', 1)
+  ->execute();
+  $users = User::loadMultiple($ids);
+
+  $role_list = array();
+  foreach ($users as $key => $user) {
+    $roles = $user->getRoles();
+    $name = $user->getAccountName();
+    $role_list["$name"] = $roles;
+  }
+
+  dumpt($role_list, 'users');
 }
 
+/**
+ * output expanded array/structure temporary
+ * @param  object or array $any stuff to dump out
+ * @param  string optional label
+ * @return null
+ */
+function dumpt($any, $what = '') {
+  if (\Drupal::state()->get('cull_users_show_status_message')) {
+    $dump = print_r($any, TRUE);
+    drupal_set_message(t('%label: <pre>%dump</pre>', ['%label' => $what, '%dump' => $dump]));
+    //\Drupal::state()->set('cull_users_show_status_message', FALSE);
+  }
+}
 /**
  * @} End of "defgroup cull_users".
  */
