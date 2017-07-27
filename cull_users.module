@@ -5,6 +5,8 @@
  * Demonstrates use of the Cron API in Drupal - hook_cron().
  */
 
+use \Drupal\user\Entity\User;
+
 /**
  * @defgroup cull_users Example: Cron
  * @ingroup examples
