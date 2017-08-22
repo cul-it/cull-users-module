@@ -41,34 +41,34 @@ function cull_users_cron() {
   $next_execution = \Drupal::state()->get('cull_users.next_execution');
   $next_execution = !empty($next_execution) ? $next_execution : 0;
   if (REQUEST_TIME >= $next_execution) {
+    // Find all users
+    $ids = \Drupal::entityQuery('user')
+    ->condition('status', 1)
+    ->execute();
+    $users = User::loadMultiple($ids);
+
+    $authenticated_only = array('authenticated');
+
+    $users_to_delete = array();
+    foreach ($users as $key => $user) {
+      $roles = $user->getRoles();
+      if ($roles == $authenticated_only) {
+        $users_to_delete[] = $key;
+      }
+    }
+    if (!empty($users_to_delete)) {
+      user_delete_multiple($users_to_delete);
+    }
+
     \Drupal::logger('cull_users')->notice('cull_users ran');
     if (\Drupal::state()->get('cull_users_show_status_message')) {
       drupal_set_message(t('cull_users executed at %time', ['%time' => date_iso8601(REQUEST_TIME)]));
     }
 
-
-    Drupal::state()->set('cull_users.next_execution', REQUEST_TIME + $interval);
+    \Drupal::state()->set('cull_users.next_execution', REQUEST_TIME + $interval);
   }
 
-  // Find all users
-  $ids = \Drupal::entityQuery('user')
-  ->condition('status', 1)
-  ->execute();
-  $users = User::loadMultiple($ids);
-
-  $authenticated_only = array('authenticated');
-
-  $users_to_delete = array();
-  foreach ($users as $key => $user) {
-    $roles = $user->getRoles();
-    if ($roles == $authenticated_only) {
-      $users_to_delete[] = $key;
-    }
-  }
-  if (!empty($users_to_delete)) {
-    user_delete_multiple($users_to_delete);
-  }
-}
+ }
 
 /**
  * output expanded array/structure temporary
