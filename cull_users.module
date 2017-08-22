@@ -60,6 +60,8 @@ function cull_users_cron() {
   ->execute();
   $users = User::loadMultiple($ids);
 
+  $authenticated_only = array('authenticated');
+
   $role_list = array();
   foreach ($users as $key => $user) {
     $roles = $user->getRoles();
