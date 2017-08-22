@@ -58,18 +58,13 @@ function cull_users_cron() {
 
   $authenticated_only = array('authenticated');
 
-  $role_list = array();
   $users_to_delete = array();
   foreach ($users as $key => $user) {
     $roles = $user->getRoles();
-    $name = $user->getAccountName();
-    $role_list["$name"] = array($roles, $key);
     if ($roles == $authenticated_only) {
       $users_to_delete[] = $key;
     }
   }
-
-  dumpt($role_list, 'users');
   dumpt($users_to_delete, 'to delete');
 
   user_delete_multiple($users_to_delete);
