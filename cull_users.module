@@ -65,9 +65,9 @@ function cull_users_cron() {
       $users_to_delete[] = $key;
     }
   }
-  dumpt($users_to_delete, 'to delete');
-
-  user_delete_multiple($users_to_delete);
+  if (!empty($users_to_delete)) {
+    user_delete_multiple($users_to_delete);
+  }
 }
 
 /**
