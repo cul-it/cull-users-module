@@ -89,7 +89,7 @@ class CullUsersForm extends ConfigFormBase {
     ];
     $form['status']['intro'] = [
       '#type' => 'item',
-      '#markup' => $this->t('The cron example demonstrates hook_cron() and hook_queue_info() processing. If you have administrative privileges you can run cron from this page and see the results.'),
+      '#markup' => $this->t('If you have administrative privileges you can run cron from this page and see the results.'),
     ];
 
     $next_execution = \Drupal::state()->get('cull_users.next_execution');
