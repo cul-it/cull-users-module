@@ -1,3 +1,5 @@
 cull_users.description:
-  title: Cull Users
+  title: 'Cull Users Settings Page'
+  parent: system.admin_config_people
+  description: 'Administration settings for Cull Users'
   route_name: cull_users
