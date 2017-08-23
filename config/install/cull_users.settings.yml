@@ -2,3 +2,4 @@
 # @see examples/cull_users/config/schema/cull_users.schema.yml
 # @see \Drupal\cull_users\Form\CronExampleForm::getEditableConfigNames()
 interval: 300
+langcode: 'en'
