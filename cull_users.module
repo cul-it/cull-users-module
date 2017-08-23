@@ -76,7 +76,7 @@ function cull_users_cron() {
  * @param  string optional label
  * @return null
  */
-function dumpt($any, $what = '') {
+function cull_users_dumpt($any, $what = '') {
   if (\Drupal::state()->get('cull_users_show_status_message')) {
     $dump = print_r($any, TRUE);
     drupal_set_message(t('%label: <pre>%dump</pre>', ['%label' => $what, '%dump' => $dump]));
