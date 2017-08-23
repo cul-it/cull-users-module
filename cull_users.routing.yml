@@ -1,5 +1,5 @@
 cull_users:
-  path: '/cull-users'
+  path: '/admin/config/people/cull-users'
   defaults:
     _form: '\Drupal\cull_users\Form\CullUsersForm'
     _title: 'Cull Users'

@@ -89,7 +89,7 @@ class CullUsersForm extends ConfigFormBase {
     ];
     $form['status']['intro'] = [
       '#type' => 'item',
-      '#markup' => $this->t('The cron example demonstrates hook_cron() and hook_queue_info() processing. If you have administrative privileges you can run cron from this page and see the results.'),
+      '#markup' => $this->t('If you have administrative privileges you can run cron from this page and see the results.'),
     ];
 
     $next_execution = \Drupal::state()->get('cull_users.next_execution');
@@ -122,45 +122,6 @@ class CullUsersForm extends ConfigFormBase {
         '#submit' => [[$this, 'cronRun']],
       ];
     }
-
-    // $form['cron_queue_setup'] = [
-    //   '#type' => 'details',
-    //   '#title' => $this->t('Cron queue setup (for hook_cron_queue_info(), etc.)'),
-    //   '#open' => TRUE,
-    // ];
-
-    // $queue_1 = $this->queue->get('cull_users_queue_1');
-    // $queue_2 = $this->queue->get('cull_users_queue_2');
-
-    // $args = [
-    //   '%queue_1' => $queue_1->numberOfItems(),
-    //   '%queue_2' => $queue_2->numberOfItems(),
-    // ];
-    // $form['cron_queue_setup']['current_cron_queue_status'] = [
-    //   '#type' => 'item',
-    //   '#markup' => $this->t('There are currently %queue_1 items in queue 1 and %queue_2 items in queue 2', $args),
-    // ];
-    // $form['cron_queue_setup']['num_items'] = [
-    //   '#type' => 'select',
-    //   '#title' => $this->t('Number of items to add to queue'),
-    //   '#options' => array_combine([1, 5, 10, 100, 1000], [1, 5, 10, 100, 1000]),
-    //   '#default_value' => 5,
-    // ];
-    // $form['cron_queue_setup']['queue'] = [
-    //   '#type' => 'radios',
-    //   '#title' => $this->t('Queue to add items to'),
-    //   '#options' => [
-    //     'cull_users_queue_1' => $this->t('Queue 1'),
-    //     'cull_users_queue_2' => $this->t('Queue 2'),
-    //   ],
-    //   '#default_value' => 'cull_users_queue_1',
-    // ];
-    // $form['cron_queue_setup']['actions'] = ['#type' => 'actions'];
-    // $form['cron_queue_setup']['actions']['submit'] = [
-    //   '#type' => 'submit',
-    //   '#value' => $this->t('Add jobs to queue'),
-    //   '#submit' => [[$this, 'addItems']],
-    // ];
 
     $form['configuration'] = [
       '#type' => 'details',
