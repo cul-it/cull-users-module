@@ -5,3 +5,4 @@ package: Cornell University Library
 core: 8.x
 dependencies:
   - drupal:node
+configure: cull_users.admin_settings

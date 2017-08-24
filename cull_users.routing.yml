@@ -5,4 +5,10 @@ cull_users:
     _title: 'Cull Users'
   requirements:
     _permission: 'access content'
-
+cull_users.admin_settings:
+  path: '/admin/config/cull_users'
+  defaults:
+    _form: 'Drupal\cull_users\Form\ModuleConfigurationForm'
+    _title: 'cull_users configuration screen'
+  requirements:
+    _permission: 'administer site configuration'

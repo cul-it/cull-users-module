@@ -3,6 +3,7 @@
 namespace Drupal\Tests\cull_users\Functional;
 
 use Drupal\Tests\BrowserTestBase;
+use Drupal\Core\Database\Database;
 
 /**
  * Test the functionality for the Cull Users.
@@ -13,6 +14,12 @@ use Drupal\Tests\BrowserTestBase;
  * @group examples
  */
 class CullUsersTest extends BrowserTestBase {
+
+  public function __construct($name = null, array $data = array(), $dataName = '') {
+    global $base_url;
+    putenv('SIMPLETEST_BASE_URL=' . $base_url);
+    putenv('SIMPLETEST_DB=' . Database::getConnectionInfoAsUrl());
+    }
 
   /**
    * An editable config object for access to 'cull_users.settings'.
@@ -32,12 +39,23 @@ class CullUsersTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   public function setUp() {
+
+
     parent::setUp();
     // Create user. Search content permission granted for the search block to
     // be shown.
     $this->drupalLogin($this->drupalCreateUser(['administer site configuration', 'access content']));
 
     $this->cronConfig = \Drupal::configFactory()->getEditable('cull_users.settings');
+  }
+
+  public function testAllwaysFail() {
+    $this->assertTrue(FALSE);
+  }
+
+
+  public function testAllwaysFail2() {
+    $this->assertTrue(FALSE);
   }
 
   /**
@@ -49,11 +67,11 @@ class CullUsersTest extends BrowserTestBase {
     // Pretend that cron has never been run (even though simpletest seems to
     // run it once...).
     \Drupal::state()->set('cull_users.next_execution', 0);
-    $this->drupalGet('examples/cron-example');
+    $this->drupalGet('/admin/config/people/cull-users');
 
     // Initial run should cause cull_users_cron() to fire.
     $post = [];
-    $this->drupalPostForm('examples/cron-example', $post, t('Run cron now'));
+    $this->drupalPostForm('/admin/config/people/cull-users', $post, t('Run cron now'));
     $assert->pageTextContains('cull_users executed at');
 
     // Forcing should also cause cull_users_cron() to fire.
@@ -82,7 +100,7 @@ class CullUsersTest extends BrowserTestBase {
     $this->drupalPostForm(NULL, $post, t('Add jobs to queue'));
     $assert->pageTextContains('There are currently 5 items in queue 1 and 100 items in queue 2');
 
-    $this->drupalPostForm('examples/cron-example', [], t('Run cron now'));
+    $this->drupalPostForm('/admin/config/people/cull-users', [], t('Run cron now'));
     $assert->responseMatches('/Queue 1 worker processed item with sequence 5 /');
     $assert->responseMatches('/Queue 2 worker processed item with sequence 100 /');
   }

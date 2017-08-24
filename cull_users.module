@@ -57,10 +57,14 @@ function cull_users_cron() {
       }
     }
     if (!empty($users_to_delete)) {
+      $cull_count = count($users_to_delete);
       user_delete_multiple($users_to_delete);
+      \Drupal::logger('cull_users')->notice('cull_users deleted @count users.', [ '@count' => $cull_count, ]);
+    }
+    else {
+      \Drupal::logger('cull_users')->notice('cull_users found no users to delete.');
     }
 
-    \Drupal::logger('cull_users')->notice('cull_users ran');
     if (\Drupal::state()->get('cull_users_show_status_message')) {
       drupal_set_message(t('cull_users executed at %time', ['%time' => date_iso8601(REQUEST_TIME)]));
     }
