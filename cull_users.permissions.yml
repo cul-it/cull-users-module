@@ -1,0 +1,5 @@
+# In cull_users.permissions.yml file.
+administer site configuration:
+  title: 'Cull Users settings'
+  description: 'Configure Cull Users module.'
+  restrict access: TRUE
