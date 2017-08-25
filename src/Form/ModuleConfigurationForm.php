@@ -77,11 +77,15 @@ class ModuleConfigurationForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $config = $this->config('cull_users.settings');
     $values = $form_state->getValues();
-    $this->config('cull_users.settings')
-      ->set('interval', $values['cull_users_interval'])
-      ->set('your_message', $values['your_message'])
-      ->save();
+    if ($values['cull_users_interval'] != $config->get('interval')) {
+      $this->config('cull_users.settings')
+        ->set('interval', $values['cull_users_interval'])
+        ->save();
+
+      \Drupal::state()->set('cull_users.next_execution', REQUEST_TIME + $values['cull_users_interval']);
+    }
   }
 
 }
