@@ -32,6 +32,27 @@ class ModuleConfigurationForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, Request $request = NULL) {
     $config = $this->config('cull_users.settings');
+    $form['status'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Cron status information'),
+      '#open' => TRUE,
+    ];
+    $form['status']['intro'] = [
+      '#type' => 'item',
+      '#markup' => $this->t('Cull Users will periodically delete users who have no special roles assigned to them on this site.'),
+    ];
+
+    $next_execution = \Drupal::state()->get('cull_users.next_execution');
+    $next_execution = !empty($next_execution) ? $next_execution : REQUEST_TIME;
+
+    $args = [
+      '%time' => date_iso8601(\Drupal::state()->get('cull_users.next_execution')),
+      '%seconds' => $next_execution - REQUEST_TIME,
+    ];
+    $form['status']['last'] = [
+      '#type' => 'item',
+      '#markup' => $this->t('cull_users_cron() will next execute the first time cron runs after %time (%seconds seconds from now)', $args),
+    ];
     $form['configuration'] = [
       '#type' => 'details',
       '#title' => $this->t('Configuration of cull_users_cron()'),
