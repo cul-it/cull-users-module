@@ -37,11 +37,6 @@ class ModuleConfigurationForm extends ConfigFormBase {
       '#title' => $this->t('Configuration of cull_users_cron()'),
       '#open' => TRUE,
     ];
-    $form['your_message'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Your message'),
-      '#default_value' => $config->get('your_message'),
-    );
     $form['configuration']['cull_users_interval'] = [
       '#type' => 'select',
       '#title' => $this->t('Cron interval'),
