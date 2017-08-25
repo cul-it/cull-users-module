@@ -3,4 +3,3 @@
 # @see \Drupal\cull_users\Form\CronExampleForm::getEditableConfigNames()
 interval: 300
 langcode: 'en'
-your_message: 'Hello Drupal 8 world'
